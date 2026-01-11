@@ -4,7 +4,7 @@ from cocotb.triggers import RisingEdge, ReadOnly, NextTimeStep, FallingEdge
 
 @cocotb.test() 
 async def reset(dut): #Test reset signal
-    cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
     dut.rst.value = 1 #set reset signal
     dut.clr.value = 0
