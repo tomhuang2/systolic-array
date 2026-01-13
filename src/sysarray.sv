@@ -2,8 +2,8 @@
 `timescale 1ns/1ns
 
 module sysarray #(
-    parameter int A_W = 8,
-    parameter int B_W = 8,
+    parameter int A_W = 8, //left side width
+    parameter int B_W = 8, //right side width
     parameter int ACC_W = 18
 ) (
     input logic clk,
@@ -12,7 +12,7 @@ module sysarray #(
     input logic signed [A_W-1:0] left [0:2],
     input logic signed [B_W-1:0] top [0:2],
     output logic signed [ACC_W-1:0] out [0:2][0:2]
-)
+);
     
     logic signed [A_W-1:0] a_bus [0:2][0:3]; //r,c ordering, need one extra col for pass out
     logic signed [B_W-1:0] b_bus [0:3][0:2];
@@ -34,7 +34,7 @@ module sysarray #(
         .a_out(a_bus[0][1]),
         .b_out(b_bus[1][0]),
         .acc_out(out[0][0])
-    )
+    );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe2 (
         .clk(clk), 
@@ -45,7 +45,7 @@ module sysarray #(
         .a_out(a_bus[0][2]),
         .b_out(b_bus[1][1]),
         .acc_out(out[0][1])
-    )
+    );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe3 (
         .clk(clk), 
@@ -56,7 +56,7 @@ module sysarray #(
         .a_out(a_bus[0][3]),
         .b_out(b_bus[1][2]),
         .acc_out(out[0][2])
-    )
+    );
 
     //ROW 1
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe4 (
@@ -68,7 +68,7 @@ module sysarray #(
         .a_out(a_bus[1][1]),
         .b_out(b_bus[2][0]),
         .acc_out(out[1][0])
-    )
+    );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe5 (
         .clk(clk), 
@@ -79,7 +79,7 @@ module sysarray #(
         .a_out(a_bus[1][2]),
         .b_out(b_bus[2][1]),
         .acc_out(out[1][1])
-    )
+    );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe6 (
         .clk(clk), 
@@ -90,7 +90,7 @@ module sysarray #(
         .a_out(a_bus[1][3]),
         .b_out(b_bus[2][2]),
         .acc_out(out[1][2])
-    )
+    );
 
     //ROW 2
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe7 (
@@ -102,7 +102,7 @@ module sysarray #(
         .a_out(a_bus[2][1]),
         .b_out(b_bus[3][0]),
         .acc_out(out[2][0])
-    )
+    );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe8 (
         .clk(clk), 
@@ -113,7 +113,7 @@ module sysarray #(
         .a_out(a_bus[2][2]),
         .b_out(b_bus[3][1]),
         .acc_out(out[2][1])
-    )
+    );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe9 (
         .clk(clk), 
@@ -124,5 +124,5 @@ module sysarray #(
         .a_out(a_bus[2][3]),
         .b_out(b_bus[3][2]),
         .acc_out(out[2][2])
-    )
+    );
 endmodule
