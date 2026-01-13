@@ -11,7 +11,7 @@ module sysarray #(
     input logic clr,
     input logic signed [A_W-1:0] left [0:2],
     input logic signed [B_W-1:0] top [0:2],
-    output logic signed [ACC_W-1:0] out [0:2][0:2]
+    output logic signed [ACC_W-1:0] out [0:8]
 );
     
     logic signed [A_W-1:0] a_bus [0:2][0:3]; //r,c ordering, need one extra col for pass out
@@ -33,7 +33,7 @@ module sysarray #(
         .b_in(b_bus[0][0]),
         .a_out(a_bus[0][1]),
         .b_out(b_bus[1][0]),
-        .acc_out(out[0][0])
+        .acc_out(out[0])
     );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe2 (
@@ -44,7 +44,7 @@ module sysarray #(
         .b_in(b_bus[0][1]),
         .a_out(a_bus[0][2]),
         .b_out(b_bus[1][1]),
-        .acc_out(out[0][1])
+        .acc_out(out[1])
     );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe3 (
@@ -55,7 +55,7 @@ module sysarray #(
         .b_in(b_bus[0][2]),
         .a_out(a_bus[0][3]),
         .b_out(b_bus[1][2]),
-        .acc_out(out[0][2])
+        .acc_out(out[2])
     );
 
     //ROW 1
@@ -67,7 +67,7 @@ module sysarray #(
         .b_in(b_bus[1][0]),
         .a_out(a_bus[1][1]),
         .b_out(b_bus[2][0]),
-        .acc_out(out[1][0])
+        .acc_out(out[3])
     );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe5 (
@@ -78,7 +78,7 @@ module sysarray #(
         .b_in(b_bus[1][1]),
         .a_out(a_bus[1][2]),
         .b_out(b_bus[2][1]),
-        .acc_out(out[1][1])
+        .acc_out(out[4])
     );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe6 (
@@ -89,7 +89,7 @@ module sysarray #(
         .b_in(b_bus[1][2]),
         .a_out(a_bus[1][3]),
         .b_out(b_bus[2][2]),
-        .acc_out(out[1][2])
+        .acc_out(out[5])
     );
 
     //ROW 2
@@ -101,7 +101,7 @@ module sysarray #(
         .b_in(b_bus[2][0]),
         .a_out(a_bus[2][1]),
         .b_out(b_bus[3][0]),
-        .acc_out(out[2][0])
+        .acc_out(out[6])
     );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe8 (
@@ -112,7 +112,7 @@ module sysarray #(
         .b_in(b_bus[2][1]),
         .a_out(a_bus[2][2]),
         .b_out(b_bus[3][1]),
-        .acc_out(out[2][1])
+        .acc_out(out[7])
     );
 
     pe #(.A_W(A_W),.B_W(B_W),.ACC_W(ACC_W)) pe9 (
@@ -123,6 +123,6 @@ module sysarray #(
         .b_in(b_bus[2][2]),
         .a_out(a_bus[2][3]),
         .b_out(b_bus[3][2]),
-        .acc_out(out[2][2])
+        .acc_out(out[8])
     );
 endmodule

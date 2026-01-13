@@ -16,14 +16,14 @@ def drive_input(dut,a,b):
     #a = array of 3 ints
     #b = array of 3 ints
     for i in range(3):
-        dut.a_in[i].value = int(a[i])
-        dut.b_in[i].value = int(b[i])
+        dut.left[i].value = int(a[i])
+        dut.top[i].value = int(b[i])
 
 def readout(dut):
     C = [[0]*3 for _ in range(3)]
-    for i in range(3):
-        for j in range(3):
-            C[i][j] = dut.acc_out[i][j].value.to_signed()
+    for r in range(3):
+        for c in range(3):
+            C[r][c] = dut.out[3*r + c].value.to_signed()
     return C
 
 async def reset_array(dut):
@@ -38,6 +38,7 @@ async def reset_array(dut):
     dut.rst.value = 0
     await RisingEdge(dut.clk)
 
+@cocotb.test()
 async def matmul1(dut): #test matmul for a*b
     A = [
         [1,2,3],
@@ -53,7 +54,7 @@ async def matmul1(dut): #test matmul for a*b
 
     expected = matmul3x3(A,B)
 
-    reset_array(dut)
+    await reset_array(dut)
 
     for t in range(7): #takes 7 cycles to cycle all inputs through array
         a = []
@@ -65,29 +66,52 @@ async def matmul1(dut): #test matmul for a*b
 
         for c in range(3):
             k = t - c
-            b.append(A[k][c] if 0 <= k < 3 else 0)
+            b.append(B[k][c] if 0 <= k < 3 else 0)
 
         drive_input(dut,a,b)
-        await RisingEdge
-
+        await RisingEdge(dut.clk)
+    
+    await ReadOnly() #settle values from last clock 
     got = readout(dut)
     dut._log.info(f"Result C = {got}")
 
     assert got == expected, f"Mismatch!\nExpected: {expected}\nGot: {got}"
 
+@cocotb.test()
+async def matmul2(dut): #test matmul for a*b
+    A = [
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]
 
+    B = [
+        [1,0,0],
+        [0,1,0],
+        [0,0,1]
+    ]
+
+    expected = matmul3x3(A,B)
+
+    await reset_array(dut)
+
+    for t in range(7): #takes 7 cycles to cycle all inputs through array
+        a = []
+        b = []
+        
+        for r in range(3):
+            k = t - r
+            a.append(A[r][k] if 0 <= k < 3 else 0)
+
+        for c in range(3):
+            k = t - c
+            b.append(B[k][c] if 0 <= k < 3 else 0)
+
+        drive_input(dut,a,b)
+        await RisingEdge(dut.clk)
     
+    await ReadOnly() #settle values from last clock 
+    got = readout(dut)
+    dut._log.info(f"Result C = {got}")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    assert got == expected, f"Mismatch!\nExpected: {expected}\nGot: {got}"

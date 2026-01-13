@@ -6,7 +6,7 @@ TOPLEVEL = sysarray
 
 # Your Python test module.
 # If your test file is test/test_pe.py, then MODULE=test.test_pe
-MODULE = test.test_sysarray
+COCOTB_TEST_MODULES = test.test_sysarray
 VERILOG_SOURCES = $(wildcard $(PWD)/src/*.sv)
 COMPILE_ARGS += -g2012
 
