@@ -12,6 +12,7 @@ I was reading through "In-Datacenter Performance Analysis of a Tensor Processing
 ## Architecture
 - 9 processing elements (PEs) arranged in a 3x3 grid
 - Each PE:
+  - Has clock and reset signals
   - Takes incoming int8 values A and B as inputs 
   - Multiplies A and B and adds product to accumulator register
   - Passes A value to the right and B down each cycle
