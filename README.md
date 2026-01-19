@@ -28,4 +28,5 @@ I was reading through *In-Datacenter Performance Analysis of a Tensor Processing
   - For each column $c$ of matrix B:
     - Define $k=t-c$
     - If $k \in [0,2]$, inject $B[k][c]$ into the array, otherwise inject 0
+
 The above is pretty hard to visualize, so I've drawn out a gif of the matrix multiply:
