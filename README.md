@@ -5,7 +5,7 @@ A simple hardware accelerator that uses a 2D systolic array for matrix multiplic
 I was reading through *In-Datacenter Performance Analysis of a Tensor Processing Unit* and became curious about how neural network workloads are accelerated in hardware. Systolic arrays are central to this process, so I decided to go about implementing a smaller version to learn how they work at RTL. I also wanted to investigate how different dataflows (output-stationary, weight-stationary) affect dataflow and performance.
 
 ## What this project does
-- Implements a 3x3 systolic array
+- Implements a 3x3 output-stationary systolic array
 - Supports int8 inputs with 18-bit accumulators
 - Verified using cocotb in Python
 
@@ -20,4 +20,12 @@ I was reading through *In-Datacenter Performance Analysis of a Tensor Processing
   - Supports int8 inputs and 18-bit accumulators
 
 ## Timing
-- Operands are injected so that
+- Given the matrix multiply of $AB$, where A and B are 3x3 matrices, we stagger the rows of A and columns of B so that matrix elements are multiplied at the correct time in the systolic array
+- On cycle t:
+  - For each row $r$ of matrix A:
+    - Define $k=t-r$
+    - If $k\in [0,2]$, inject $A[r][k]$ into the array, otherwise inject 0
+  - For each column $c$ of matrix B:
+    - Define $k=t-c$
+    - If $k \in [0,2]$, inject $B[k][c]$ into the array, otherwise inject 0
+The above is pretty hard to visualize, so I've drawn out a gif of the matrix multiply:
