@@ -35,7 +35,3 @@ I was reading through *In-Datacenter Performance Analysis of a Tensor Processing
     - If $k \in [0,2]$, inject $B[k][c]$ into the array, otherwise inject 0
 
 The above is pretty hard to visualize, so I've drawn out the layout of the data:
-
-```markdown
-![timing](timing.jpg)
-```
