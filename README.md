@@ -21,7 +21,7 @@ I was reading through *In-Datacenter Performance Analysis of a Tensor Processing
 
 ## Timing
 - Given the matrix multiply of $AB$, where A and B are 3x3 matrices, we stagger the rows of A and columns of B so that matrix elements are multiplied at the correct time in the systolic array
-- On cycle t:
+- For t = 0, t++:
   - For each row $r$ (zero indexed) of matrix A:
     - Define $k=t-r$
     - If $k\in [0,2]$, inject $A[r][k]$ into the array, otherwise inject 0
